@@ -1,0 +1,52 @@
+import sys
+import PyPDF2
+from PIL import Image
+import pytesseract
+
+def tesseract(a):
+    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
+    #text=pytesseract.image_to_string(r'i2.png')
+    text=pytesseract.image_to_string(a)
+    print(text)
+
+
+input1 = PyPDF2.PdfFileReader(open("hpimg.pdf", "rb"))
+page0 = input1.getPage(0)
+img_lst=[]
+xObject = page0['/Resources']['/XObject'].getObject()
+for obj in xObject:
+    if xObject[obj]['/Subtype'] == '/Image':
+        size = (xObject[obj]['/Width'], xObject[obj]['/Height'])
+        data = xObject[obj].getData()
+        if xObject[obj]['/ColorSpace'] == '/DeviceRGB':
+            mode = "RGB"
+        else:
+            mode = "P"
+        if xObject[obj]['/Filter'] == '/FlateDecode':
+            img = Image.frombytes(mode, size, data)
+            img.save(obj[1:] + ".png")
+            img_lst.append(obj[1:]+".png")
+            #print(a)
+            #print(img_lst)
+        elif xObject[obj]['/Filter'] == '/DCTDecode':
+            img = open(obj[1:] + ".jpg", "wb")
+            img.write(data)
+            img.close()
+        elif xObject[obj]['/Filter'] == '/JPXDecode':
+            img = open(obj[1:] + ".jp2", "wb")
+            #a=img.write(data)
+            #print(a)
+            img.close()
+
+for img in img_lst:
+    tesseract(img)
+
+
+
+#import pytesseract
+def tesseract(a):
+    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
+    #text=pytesseract.image_to_string(r'i2.png')
+    text=pytesseract.image_to_string(a)
+    print(text)
+    
