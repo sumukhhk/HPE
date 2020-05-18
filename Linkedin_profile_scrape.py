@@ -8,8 +8,8 @@ class Linkedin():
     def getData(self):
         driver = webdriver.Chrome('chromedriver.exe')        
         driver.get('https://www.linkedin.com/login')
-        driver.find_element_by_id('username').send_keys('sumukh.cs17@bmsce.ac.in') #Enter username of linkedin account here
-        driver.find_element_by_id('password').send_keys('Sumukh@99')  #Enter Password of linkedin account here
+        driver.find_element_by_id('username').send_keys('USERNAME') #Enter username of linkedin account here
+        driver.find_element_by_id('password').send_keys('PASSWORD')  #Enter Password of linkedin account here
         driver.find_element_by_xpath("//*[@type='submit']").click()
 
         #*********** Search Result ***************#
